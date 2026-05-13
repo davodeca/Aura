@@ -1,0 +1,586 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --cream:#FAF8F4;--ink:#1A1714;--warm:#E8E2D9;--gold:#B8975A;--muted:#8A8278;
+  --soft:#F2EDE6;--font-display:'Cormorant Garamond',serif;--font-body:'DM Sans',sans-serif;
+}
+body{background:var(--cream);color:var(--ink);font-family:var(--font-body);overflow-x:hidden;min-height:600px}
+
+.screen{display:none;min-height:580px;flex-direction:column}
+.screen.active{display:flex}
+
+/* ── LANDING ── */
+#landing{
+  background:var(--ink);color:var(--cream);
+  align-items:center;justify-content:center;text-align:center;
+  padding:48px 28px;position:relative;overflow:hidden;
+}
+.bg-orb{
+  position:absolute;width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(184,151,90,0.18),transparent 70%);
+  animation:orbFloat 6s ease-in-out infinite;
+}
+.bg-orb:nth-child(1){top:-80px;left:-60px;animation-delay:0s}
+.bg-orb:nth-child(2){bottom:-60px;right:-80px;animation-delay:3s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-20px) scale(1.1)}}
+
+.land-eyebrow{font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;font-weight:500;opacity:0;animation:riseIn 0.8s 0.2s forwards}
+.land-title{font-family:var(--font-display);font-size:clamp(60px,12vw,88px);font-weight:300;line-height:1;letter-spacing:-0.02em;opacity:0;animation:riseIn 0.9s 0.4s forwards}
+.land-title em{font-style:italic;color:var(--gold)}
+.land-sub{font-family:var(--font-display);font-size:18px;font-weight:300;color:rgba(250,248,244,0.55);font-style:italic;margin:10px 0 40px;opacity:0;animation:riseIn 0.8s 0.6s forwards}
+.btn-primary{
+  display:inline-block;background:var(--gold);color:var(--ink);
+  font-family:var(--font-body);font-size:12px;font-weight:500;
+  letter-spacing:0.12em;text-transform:uppercase;padding:14px 40px;
+  border:none;cursor:pointer;border-radius:2px;
+  opacity:0;animation:riseIn 0.8s 0.8s forwards;
+  transition:transform 0.25s,background 0.25s,box-shadow 0.25s;
+}
+.btn-primary:hover{background:#D4AE6E;transform:translateY(-2px);box-shadow:0 8px 24px rgba(184,151,90,0.3)}
+.btn-primary:active{transform:translateY(0)}
+
+.pulse-ring{
+  width:70px;height:70px;border-radius:50%;
+  border:1px solid rgba(184,151,90,0.3);
+  position:absolute;animation:pulseRing 3s ease-out infinite;
+}
+.pulse-ring:nth-child(3){animation-delay:1s}
+.pulse-ring:nth-child(4){animation-delay:2s}
+@keyframes pulseRing{0%{transform:scale(0.5);opacity:0.8}100%{transform:scale(3);opacity:0}}
+@keyframes riseIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.floating-tags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:32px;opacity:0;animation:riseIn 0.8s 1s forwards}
+.ftag{border:1px solid rgba(255,255,255,0.15);padding:6px 14px;border-radius:20px;font-size:11px;letter-spacing:0.08em;color:rgba(255,255,255,0.5);animation:tagFloat 4s ease-in-out infinite}
+.ftag:nth-child(1){animation-delay:0s}
+.ftag:nth-child(2){animation-delay:0.8s}
+.ftag:nth-child(3){animation-delay:1.6s}
+@keyframes tagFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+/* ── UPLOAD ── */
+#upload{padding:32px 24px;gap:20px}
+.s-head{text-align:center;animation:riseIn 0.5s forwards}
+.s-step{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:500}
+.s-title{font-family:var(--font-display);font-size:30px;font-weight:300}
+
+.upload-zone{
+  border:1.5px dashed var(--warm);border-radius:10px;padding:36px 20px;
+  text-align:center;cursor:pointer;transition:all 0.35s ease;
+  background:var(--soft);position:relative;overflow:hidden;
+}
+.upload-zone::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 100%,rgba(184,151,90,0.08),transparent 60%);
+  opacity:0;transition:opacity 0.35s;
+}
+.upload-zone:hover{border-color:var(--gold);background:#F7F2EA}
+.upload-zone:hover::before{opacity:1}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.u-icon{font-size:36px;display:block;margin-bottom:12px;transition:transform 0.3s}
+.upload-zone:hover .u-icon{transform:scale(1.15) rotate(-5deg)}
+.u-label{font-family:var(--font-display);font-size:18px;font-weight:300;color:var(--muted);display:block;margin-bottom:4px}
+.u-sub{font-size:12px;color:var(--muted);letter-spacing:0.05em}
+.preview-img{width:100%;max-height:180px;object-fit:cover;border-radius:6px;display:none}
+
+.samples-label{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);text-align:center;margin:4px 0 10px}
+.samples{display:flex;gap:8px}
+.sample-card{
+  flex:1;background:var(--soft);border:1px solid var(--warm);
+  border-radius:8px;padding:14px 8px;text-align:center;cursor:pointer;
+  transition:all 0.25s ease;
+}
+.sample-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.08)}
+.sample-card:active{transform:translateY(0)}
+.s-icon{font-size:22px;display:block;margin-bottom:6px}
+.s-name{font-size:11px;color:var(--muted)}
+
+.btn-row{display:flex;gap:8px}
+.btn-ghost{
+  flex:1;background:transparent;border:1px solid var(--warm);color:var(--ink);
+  font-family:var(--font-body);font-size:12px;font-weight:500;
+  letter-spacing:0.1em;text-transform:uppercase;padding:12px;
+  cursor:pointer;transition:all 0.25s ease;border-radius:3px;
+}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.btn-cta{
+  flex:2;background:var(--ink);color:var(--cream);border:none;
+  font-family:var(--font-body);font-size:12px;font-weight:500;
+  letter-spacing:0.1em;text-transform:uppercase;padding:12px;
+  cursor:pointer;transition:all 0.25s ease;border-radius:3px;
+}
+.btn-cta:hover{background:#2D2925;transform:translateY(-1px)}
+
+/* ── QUIZ ── */
+#quiz{padding:28px 24px;gap:16px}
+.prog-bar{height:2px;background:var(--warm);border-radius:1px}
+.prog-fill{height:100%;background:var(--gold);border-radius:1px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1)}
+.quiz-q{font-family:var(--font-display);font-size:24px;font-weight:300;line-height:1.3;animation:riseIn 0.4s forwards}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{
+  background:var(--soft);border:1px solid var(--warm);border-radius:8px;
+  padding:14px 10px;cursor:pointer;text-align:center;
+  transition:all 0.25s ease;display:flex;flex-direction:column;gap:3px;
+  animation:riseIn 0.4s forwards;
+}
+.opt:nth-child(1){animation-delay:0.05s}
+.opt:nth-child(2){animation-delay:0.1s}
+.opt:nth-child(3){animation-delay:0.15s}
+.opt:nth-child(4){animation-delay:0.2s}
+.opt:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,0.07)}
+.opt.sel{border-color:var(--gold);background:#F5EFE5;box-shadow:0 4px 16px rgba(184,151,90,0.15)}
+.opt-icon{font-size:22px}
+.opt-label{font-family:var(--font-display);font-size:15px;font-weight:400}
+.opt-sub{font-size:11px;color:var(--muted)}
+.quiz-nav{display:flex;justify-content:space-between;align-items:center}
+.step-ct{font-size:11px;color:var(--muted);letter-spacing:0.1em}
+
+/* ── LOADING ── */
+#loading{align-items:center;justify-content:center;text-align:center;padding:60px 24px;gap:24px}
+.load-anim{position:relative;width:80px;height:80px}
+.load-ring{
+  position:absolute;inset:0;border-radius:50%;
+  border:1.5px solid transparent;
+}
+.load-ring:nth-child(1){border-top-color:var(--gold);animation:spin 1.4s linear infinite}
+.load-ring:nth-child(2){border-right-color:rgba(184,151,90,0.4);animation:spin 2s linear infinite reverse;inset:8px}
+.load-ring:nth-child(3){border-bottom-color:rgba(184,151,90,0.2);animation:spin 2.6s linear infinite;inset:16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-title{font-family:var(--font-display);font-size:28px;font-weight:300;font-style:italic;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
+.load-sub{font-size:13px;color:var(--muted)}
+.load-dots{display:flex;gap:6px;justify-content:center}
+.ld{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:ldBounce 1.2s ease-in-out infinite}
+.ld:nth-child(2){animation-delay:0.2s}
+.ld:nth-child(3){animation-delay:0.4s}
+@keyframes ldBounce{0%,80%,100%{transform:scale(0.6);opacity:0.5}40%{transform:scale(1);opacity:1}}
+
+/* ── RESULTS ── */
+#results{padding:22px 20px;gap:16px}
+.res-head{display:flex;justify-content:space-between;align-items:flex-start}
+.res-title{font-family:var(--font-display);font-size:26px;font-weight:300}
+
+.look-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.ltab{
+  flex-shrink:0;border:1px solid var(--warm);background:transparent;
+  padding:7px 16px;font-size:12px;font-weight:500;letter-spacing:0.04em;
+  cursor:pointer;border-radius:3px;transition:all 0.2s ease;
+  font-family:var(--font-body);color:var(--muted);
+}
+.ltab.active{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.ltab:not(.active):hover{border-color:var(--gold);color:var(--ink)}
+
+.look-card{background:white;border:1px solid var(--warm);border-radius:12px;overflow:hidden;animation:riseIn 0.45s forwards}
+.look-hero{background:var(--soft);padding:20px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.item-pill{
+  background:white;border:1px solid var(--warm);border-radius:40px;
+  padding:8px 14px;font-size:12px;display:flex;align-items:center;gap:10px;
+  transition:all 0.2s;cursor:default;
+}
+.item-pill:hover{border-color:var(--gold);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.06)}
+.icolor{width:14px;height:14px;border-radius:50%;flex-shrink:0;border:1px solid rgba(0,0,0,0.1)}
+.itype{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.iname{font-size:13px;font-weight:400}
+.inote{font-size:11px;color:var(--muted);font-style:italic}
+
+.look-info{padding:16px 18px}
+.look-name{font-family:var(--font-display);font-size:24px;font-weight:400;margin-bottom:4px}
+.look-desc{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:12px}
+.look-tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;background:var(--soft);color:var(--muted);padding:4px 10px;border-radius:2px}
+.act-row{display:flex;gap:8px;margin-top:14px}
+.btn-save{
+  flex:1;background:var(--ink);color:var(--cream);border:none;padding:11px;
+  font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;
+  cursor:pointer;border-radius:4px;font-family:var(--font-body);
+  transition:all 0.25s;
+}
+.btn-save:hover{background:#2D2925;transform:translateY(-1px)}
+.btn-save.saved{background:#7A9E8A}
+.btn-var{
+  background:transparent;border:1px solid var(--warm);color:var(--ink);
+  padding:11px 16px;font-size:18px;cursor:pointer;border-radius:4px;
+  transition:all 0.25s;
+}
+.btn-var:hover{border-color:var(--gold);transform:rotate(90deg)}
+
+/* CHAT */
+.chat-wrap{background:white;border:1px solid var(--warm);border-radius:10px;padding:14px}
+.chat-lbl{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:500}
+.chat-row{display:flex;gap:8px}
+.chat-in{
+  flex:1;border:1px solid var(--warm);border-radius:4px;padding:10px 12px;
+  font-size:13px;font-family:var(--font-body);color:var(--ink);
+  background:var(--soft);outline:none;transition:border-color 0.2s;
+}
+.chat-in:focus{border-color:var(--gold)}
+.chat-btn{
+  background:var(--gold);border:none;color:var(--ink);padding:10px 18px;
+  font-size:12px;font-weight:500;cursor:pointer;border-radius:4px;
+  font-family:var(--font-body);transition:all 0.2s;white-space:nowrap;
+}
+.chat-btn:hover{background:#D4AE6E;transform:scale(1.03)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.chip{
+  background:var(--soft);border:1px solid var(--warm);border-radius:20px;
+  padding:5px 12px;font-size:11px;cursor:pointer;color:var(--muted);
+  transition:all 0.2s;white-space:nowrap;
+}
+.chip:hover{border-color:var(--gold);color:var(--ink);transform:scale(1.04)}
+.ai-resp{
+  background:var(--soft);border-left:2px solid var(--gold);
+  border-radius:0 6px 6px 0;padding:10px 14px;
+  font-size:13px;line-height:1.6;margin-top:10px;
+  animation:riseIn 0.4s forwards;
+}
+.typing{display:flex;gap:4px;align-items:center;padding:10px 0}
+.td{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:ldBounce 1.2s ease infinite}
+.td:nth-child(2){animation-delay:0.2s}
+.td:nth-child(3){animation-delay:0.4s}
+
+.bot-nav{
+  display:flex;justify-content:center;gap:20px;
+  padding:14px 0 6px;border-top:1px solid var(--warm);margin-top:auto;
+}
+.nav-b{
+  background:transparent;border:none;font-size:11px;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--muted);cursor:pointer;
+  font-family:var(--font-body);font-weight:500;padding:4px;
+  transition:color 0.2s;
+}
+.nav-b:hover{color:var(--gold)}
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<div id="landing" class="screen active">
+  <div class="bg-orb"></div>
+  <div class="bg-orb"></div>
+  <div class="pulse-ring"></div>
+  <div class="pulse-ring"></div>
+  <div style="position:relative;z-index:1">
+    <div class="land-eyebrow">Your personal AI stylist</div>
+    <h1 class="land-title">AU<em>R</em>A</h1>
+    <p class="land-sub">Upload one piece. Own the whole look.</p>
+    <button class="btn-primary" onclick="go('upload')">Start styling →</button>
+    <div class="floating-tags">
+      <span class="ftag">Minimal</span>
+      <span class="ftag">Streetwear</span>
+      <span class="ftag">Romantic</span>
+    </div>
+  </div>
+</div>
+
+<!-- UPLOAD -->
+<div id="upload" class="screen">
+  <div class="s-head">
+    <div class="s-step">Step 1 of 3</div>
+    <h2 class="s-title">Upload your piece</h2>
+  </div>
+  <div class="upload-zone" id="uploadZone">
+    <input type="file" accept="image/*" onchange="handleUpload(event)">
+    <span class="u-icon" id="uIcon">✦</span>
+    <img class="preview-img" id="prevImg">
+    <span class="u-label" id="uLabel">Drop your clothing item here</span>
+    <span class="u-sub" id="uSub">or tap to browse your photos</span>
+  </div>
+  <div class="samples-label">Or try a sample</div>
+  <div class="samples">
+    <div class="sample-card" onclick="pickSample('emerald silk blouse','#2D6A4F','👗')">
+      <span class="s-icon">👗</span>
+      <span class="s-name">Emerald blouse</span>
+    </div>
+    <div class="sample-card" onclick="pickSample('tan leather jacket','#C4935A','🧥')">
+      <span class="s-icon">🧥</span>
+      <span class="s-name">Tan jacket</span>
+    </div>
+    <div class="sample-card" onclick="pickSample('cobalt blue trousers','#1A4A8A','👖')">
+      <span class="s-icon">👖</span>
+      <span class="s-name">Cobalt trousers</span>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-ghost" onclick="go('landing')">← Back</button>
+    <button class="btn-cta" onclick="go('quiz')">Continue →</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="screen">
+  <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:33%"></div></div>
+  <div class="s-step" id="qStep">Question 1 of 3</div>
+  <div class="quiz-q" id="qText"></div>
+  <div class="opts" id="qOpts"></div>
+  <div class="quiz-nav">
+    <button class="btn-ghost" style="flex:0;padding:10px 20px" onclick="qBack()">← Back</button>
+    <span class="step-ct" id="qCount">1 / 3</span>
+    <button class="btn-cta" style="flex:0;padding:10px 24px" onclick="qNext()">Next →</button>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div id="loading" class="screen">
+  <div class="load-anim">
+    <div class="load-ring"></div>
+    <div class="load-ring"></div>
+    <div class="load-ring"></div>
+  </div>
+  <div class="load-title">Curating your looks…</div>
+  <div class="load-sub">AI is styling your outfit</div>
+  <div class="load-dots">
+    <div class="ld"></div><div class="ld"></div><div class="ld"></div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="results" class="screen">
+  <div class="res-head">
+    <div>
+      <div class="s-step">Your looks</div>
+      <div class="res-title" id="resTitle">3 outfits ready</div>
+    </div>
+    <button class="btn-ghost" style="padding:8px 14px;font-size:11px" onclick="go('upload')">Restyle</button>
+  </div>
+  <div class="look-tabs" id="lTabs"></div>
+  <div id="lCard"></div>
+  <div class="chat-wrap">
+    <div class="chat-lbl">✦ Refine with AI</div>
+    <div class="chat-row">
+      <input class="chat-in" id="chatIn" placeholder="e.g. make it more elegant…" onkeydown="if(event.key==='Enter')doChat()">
+      <button class="chat-btn" onclick="doChat()">Ask →</button>
+    </div>
+    <div class="chips">
+      <span class="chip" onclick="qChat('More elegant')">More elegant</span>
+      <span class="chip" onclick="qChat('Add layers')">Add layers</span>
+      <span class="chip" onclick="qChat('Warmer tones')">Warmer tones</span>
+      <span class="chip" onclick="qChat('Go bolder')">Go bolder</span>
+      <span class="chip" onclick="qChat('Make it casual')">More casual</span>
+    </div>
+    <div id="aiOut"></div>
+  </div>
+  <div class="bot-nav">
+    <button class="nav-b" onclick="go('upload')">New piece</button>
+    <button class="nav-b" onclick="alert('Saved looks coming soon!')">Saved</button>
+    <button class="nav-b" onclick="go('landing')">Home</button>
+  </div>
+</div>
+
+<script>
+const S={garment:'a green shirt',answers:{},look:0,looks:[]};
+
+const Qs=[
+  {id:'vibe',q:"What's your vibe?",opts:[
+    {i:'🌿',l:'Minimal',s:'Clean & refined'},
+    {i:'🔥',l:'Streetwear',s:'Bold & edgy'},
+    {i:'🌸',l:'Romantic',s:'Soft & feminine'},
+    {i:'💼',l:'Power',s:'Sharp & polished'}
+  ]},
+  {id:'occ',q:'What occasion?',opts:[
+    {i:'☕',l:'Daily',s:'Effortless everyday'},
+    {i:'🌙',l:'Night out',s:'Evening & events'},
+    {i:'💻',l:'Work',s:'Office ready'},
+    {i:'🌿',l:'Weekend',s:'Relaxed & free'}
+  ]},
+  {id:'pal',q:'Your color energy?',opts:[
+    {i:'🤍',l:'Neutrals',s:'Ivory, camel, stone'},
+    {i:'🖤',l:'Monochromes',s:'Black, grey, white'},
+    {i:'🍂',l:'Earth tones',s:'Rust, terracotta'},
+    {i:'💎',l:'Jewels',s:'Sapphire, emerald'}
+  ]}
+];
+
+let qIdx=0;
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>{
+    s.classList.remove('active');
+    s.style.animation='';
+  });
+  const el=document.getElementById(id);
+  el.classList.add('active');
+  el.style.animation='none';
+  void el.offsetWidth;
+  el.style.animation='';
+  if(id==='quiz') drawQuiz();
+}
+
+function handleUpload(e){
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const img=document.getElementById('prevImg');
+    img.src=ev.target.result; img.style.display='block';
+    document.getElementById('uIcon').style.display='none';
+    document.getElementById('uLabel').textContent='Perfect!';
+    document.getElementById('uSub').textContent=f.name;
+    S.garment='your uploaded clothing item';
+  };
+  r.readAsDataURL(f);
+}
+
+function pickSample(name,col,icon){
+  S.garment=name; S.garmentColor=col;
+  document.getElementById('uIcon').textContent=icon;
+  document.getElementById('uLabel').textContent=name;
+  document.getElementById('uSub').textContent='Tap Continue to style it';
+  // animate the card
+  document.querySelectorAll('.sample-card').forEach(c=>{
+    if(c.textContent.includes(name.split(' ')[1]||name)){
+      c.style.borderColor='var(--gold)';
+      c.style.background='#F5EFE5';
+    } else {
+      c.style.borderColor='';c.style.background='';
+    }
+  });
+  setTimeout(()=>go('quiz'),400);
+}
+
+function drawQuiz(){
+  const q=Qs[qIdx];
+  document.getElementById('qStep').textContent=`Question ${qIdx+1} of ${Qs.length}`;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qCount').textContent=`${qIdx+1} / ${Qs.length}`;
+  document.getElementById('progFill').style.width=`${((qIdx+1)/Qs.length)*100}%`;
+  document.getElementById('qOpts').innerHTML=q.opts.map((o,i)=>`
+    <div class="opt ${S.answers[q.id]===o.l?'sel':''}" style="animation-delay:${i*0.06}s;opacity:0" onclick="pickOpt('${q.id}','${o.l}',this)">
+      <span class="opt-icon">${o.i}</span>
+      <span class="opt-label">${o.l}</span>
+      <span class="opt-sub">${o.s}</span>
+    </div>`).join('');
+}
+
+function pickOpt(id,val,el){
+  S.answers[id]=val;
+  document.querySelectorAll('.opt').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function qNext(){
+  if(qIdx<Qs.length-1){qIdx++;drawQuiz();}
+  else genLooks();
+}
+function qBack(){
+  if(qIdx>0){qIdx--;drawQuiz();}
+  else go('upload');
+}
+
+async function genLooks(){
+  go('loading');
+  const p=`You are an expert fashion stylist. The user has ${S.garment}. Vibe: ${S.answers.vibe||'Minimal'}, Occasion: ${S.answers.occ||'Daily'}, Palette: ${S.answers.pal||'Neutrals'}. Generate exactly 3 complete outfit looks. Return ONLY valid JSON, no markdown:
+{"looks":[{"name":"Look name (2-3 words)","description":"One elegant sentence about the aesthetic","tags":["tag1","tag2","tag3"],"items":[{"type":"Top","name":"item","color":"#hex","note":"short tip"},{"type":"Bottom","name":"item","color":"#hex","note":"short tip"},{"type":"Shoes","name":"item","color":"#hex","note":"short tip"},{"type":"Accessory","name":"item","color":"#hex","note":"short tip"}]}]}`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:p}]})});
+    const d=await r.json();
+    const t=d.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim();
+    S.looks=JSON.parse(t).looks;
+  }catch(e){S.looks=fallback();}
+  renderResults(); go('results');
+}
+
+function fallback(){return[
+  {name:'Quiet Luxury',description:'Understated elegance through clean lines and elevated fabrics.',tags:['Minimal','Polished','Timeless'],items:[
+    {type:'Top',name:'Ivory cashmere sweater',color:'#F5F0E8',note:'Tuck front loosely'},
+    {type:'Bottom',name:'Stone wide-leg trousers',color:'#C4B89A',note:'High waist, clean press'},
+    {type:'Shoes',name:'Camel loafers',color:'#C4935A',note:'Polished leather'},
+    {type:'Accessory',name:'Minimalist gold watch',color:'#B8975A',note:'Keep it simple'}
+  ]},
+  {name:'Urban Edge',description:'Contemporary contrasts with bold structure and modern cool.',tags:['Streetwear','Modern','Bold'],items:[
+    {type:'Top',name:'Oversized white tee',color:'#F0EDE8',note:'Layer under jacket'},
+    {type:'Bottom',name:'Black tapered joggers',color:'#2A2825',note:'Slim fit ankle'},
+    {type:'Shoes',name:'Chunky white sneakers',color:'#ECEAE6',note:'Statement sole'},
+    {type:'Accessory',name:'Silver chain necklace',color:'#C0BEB8',note:'Stack layers'}
+  ]},
+  {name:'Romantic Dusk',description:'Soft feminine energy with tonal dressing and delicate details.',tags:['Romantic','Soft','Evening'],items:[
+    {type:'Top',name:'Blush silk camisole',color:'#E8C4B0',note:'Lace trim detail'},
+    {type:'Bottom',name:'Dusty rose midi skirt',color:'#D4A090',note:'Flowing bias cut'},
+    {type:'Shoes',name:'Nude block heel mules',color:'#C4A882',note:'Open-toe elegance'},
+    {type:'Accessory',name:'Pearl drop earrings',color:'#F0EDE8',note:'Vintage-inspired'}
+  ]}
+];}
+
+function renderResults(){
+  document.getElementById('resTitle').textContent=`3 looks — ${S.answers.vibe||'for you'}`;
+  document.getElementById('lTabs').innerHTML=S.looks.map((l,i)=>`<button class="ltab ${i===0?'active':''}" onclick="switchLook(${i})">${l.name}</button>`).join('');
+  drawCard(0);
+}
+
+function switchLook(i){
+  S.look=i;
+  document.querySelectorAll('.ltab').forEach((t,idx)=>t.classList.toggle('active',idx===i));
+  drawCard(i);
+}
+
+function drawCard(i){
+  const l=S.looks[i];
+  document.getElementById('lCard').innerHTML=`
+  <div class="look-card">
+    <div class="look-hero">
+      ${l.items.map(it=>`
+      <div class="item-pill">
+        <div class="icolor" style="background:${it.color}"></div>
+        <div>
+          <div class="itype">${it.type}</div>
+          <div class="iname">${it.name}</div>
+          <div class="inote">${it.note}</div>
+        </div>
+      </div>`).join('')}
+    </div>
+    <div class="look-info">
+      <div class="look-name">${l.name}</div>
+      <div class="look-desc">${l.description}</div>
+      <div class="look-tags">${l.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      <div class="act-row">
+        <button class="btn-save" id="saveBtn${i}" onclick="saveLook(${i})">Save look</button>
+        <button class="btn-var" onclick="regenLook()" title="New variation">↺</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function saveLook(i){
+  const b=document.getElementById('saveBtn'+i);
+  b.textContent='✓ Saved'; b.classList.add('saved');
+  setTimeout(()=>{b.textContent='Save look';b.classList.remove('saved');},2200);
+}
+
+async function regenLook(){
+  const l=S.looks[S.look];
+  const out=document.getElementById('aiOut');
+  out.innerHTML=`<div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
+  const p=`Generate a fresh variation of a "${l.name}" outfit for someone with ${S.garment}. Vibe: ${S.answers.vibe||'Minimal'}. Return ONLY JSON for one look: {"name":"...","description":"...","tags":["..."],"items":[{"type":"Top","name":"...","color":"#hex","note":"..."},{"type":"Bottom","name":"...","color":"#hex","note":"..."},{"type":"Shoes","name":"...","color":"#hex","note":"..."},{"type":"Accessory","name":"...","color":"#hex","note":"..."}]}`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,messages:[{role:'user',content:p}]})});
+    const d=await r.json();
+    const newL=JSON.parse(d.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim());
+    S.looks[S.look]=newL;
+    document.querySelectorAll('.ltab')[S.look].textContent=newL.name;
+    drawCard(S.look);
+    out.innerHTML=`<div class="ai-resp">✦ Fresh variation ready — same energy, new pieces.</div>`;
+  }catch(e){out.innerHTML=`<div class="ai-resp">✦ Try the variation again!</div>`;}
+}
+
+function qChat(m){document.getElementById('chatIn').value=m;doChat();}
+
+async function doChat(){
+  const inp=document.getElementById('chatIn');
+  const msg=inp.value.trim(); if(!msg)return;
+  inp.value='';
+  const out=document.getElementById('aiOut');
+  out.innerHTML=`<div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
+  const l=S.looks[S.look];
+  const p=`You are a warm AI fashion stylist. Outfit: "${l.name}" — ${l.description}. Items: ${l.items.map(i=>i.name).join(', ')}. User: "${msg}". Give 1-2 sentences with a concrete styling suggestion. Be inspiring, specific, conversational. No markdown.`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:200,messages:[{role:'user',content:p}]})});
+    const d=await r.json();
+    out.innerHTML=`<div class="ai-resp">✦ ${d.content.map(c=>c.text||'').join('').trim()}</div>`;
+  }catch(e){out.innerHTML=`<div class="ai-resp">✦ Try layering a structured blazer — it instantly elevates the whole look.</div>`;}
+}
+</script>
+</body>
+</html>
